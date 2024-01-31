@@ -4,7 +4,7 @@
 namespace seekpoint {
     #define DEBUG_PATH std::string("x64\\Release\\assets\\")
     #define NORMAL_PATH std::string("assets\\")
-    #define DEBUG true
+    #define DEBUG false
     #define PADDING 128
     #define WINDOW_WIDTH 256
     #define WINDOW_HEIGHT 256
