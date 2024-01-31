@@ -10,4 +10,4 @@ SFML test
 
 
 ## Compiling or something
-- ngl i have no clue just compile it on x64 release vs2022
+- ngl i have no clue just compile it on x64 release in vs2022
