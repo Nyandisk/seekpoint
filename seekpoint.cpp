@@ -11,8 +11,7 @@
 #include "spmath.h"
 #include "definitions.hpp"
 #include "seeker.h"
-
-
+#include "target.h"
 
 void drawCheckpoint(sf::RenderWindow& window, const sf::Vector2f& position, const float radius, bool& lfs, const seekpoint::FieldOfVision& fov) {
     sf::CircleShape teach = sf::CircleShape(radius);
@@ -76,9 +75,13 @@ int main()
     sf::Time dt;
     sf::Clock deltaClock;
     sf::Clock elapsedTime;
-
+    std::vector<seekpoint::Seeker> seekers;
+    seekpoint::Target target1 = seekpoint::Target(
+        seekers,
+        sf::Vector2f(128.0F, 128.0F)
+    );
     seekpoint::Seeker seeker1 = seekpoint::Seeker(
-        sf::Vector2f(128.0F, 128.0F),
+        target1,
         sf::Vector2f(128.0F,128.0F), // starting location
         180.0F, // starting rotation
         50.0F, // vision distance
@@ -89,6 +92,7 @@ int main()
         // size
         // render points
     );
+    seekers.push_back(seeker1);
 
     
     bool lastFrameSpotted = false;
@@ -155,7 +159,9 @@ int main()
         window.setView(view);
         window.clear();
 
-        seeker1.updateCurrentTarget(checkpointPos);
+        target1.update(window,dt);
+        target1.render(window);
+        seeker1.updateCurrentTarget(target1);
         seeker1.update(window,dt);
         seeker1.render(window);
         

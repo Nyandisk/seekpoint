@@ -4,21 +4,21 @@
 #include <cmath>
 
 namespace seekpoint {
-    Seeker::Seeker(const sf::Vector2f& target, const sf::Vector2f& location, float rotation, float visionDistance, float fovAngle, float rotationSpeed, float movementSpeed, bool seeksMouse, const sf::Color seekerColor, unsigned int seekerSize, unsigned int renderPoints)
-        : location(location), target(target), teachRot(rotation), seekerSize(seekerSize), seekerColor(seekerColor), teachVision(visionDistance), teachMoveSpeed(movementSpeed), seeksMouse(seeksMouse), teachFovAngle(fovAngle), teachRotationSpeed(rotationSpeed), teachRenderPoints(renderPoints), fov(FieldOfVision(visionDistance, fovAngle, rotation, location)), reachedLastFrame(false) {}
+    Seeker::Seeker(const Target& target, const sf::Vector2f& location, float rotation, float visionDistance, float fovAngle, float rotationSpeed, float movementSpeed, bool seeksMouse, const sf::Color seekerColor, unsigned int seekerSize, unsigned int renderPoints)
+        : location(location), target(const_cast<Target&>(target)), teachRot(rotation), seekerSize(seekerSize), seekerColor(seekerColor), teachVision(visionDistance), teachMoveSpeed(movementSpeed), seeksMouse(seeksMouse), teachFovAngle(fovAngle), teachRotationSpeed(rotationSpeed), teachRenderPoints(renderPoints), fov(FieldOfVision(visionDistance, fovAngle, rotation, location)), reachedLastFrame(false) {}
 
     void Seeker::update(sf::RenderWindow& window, const sf::Time& dt) {
         if (this->seeksMouse) {
             this->rotateTowardsMouse(window, dt);
         }
         else {
-            this->rotateTowardsTarget(window, dt, this->target);
+            this->rotateTowardsTarget(window, dt, this->target.getLocation());
         }
         this->updateFov();
-        sf::Vector2f movement = this->moveTowards(this->target);
+        sf::Vector2f movement = this->moveTowards(this->target.getLocation());
         constexpr float threshold = 1.0f;
-        if (seekpoint::Math::vectorDistance(this->getLocation(), this->target) <= threshold) {
-            this->setLocation(this->target);
+        if (seekpoint::Math::vectorDistance(this->getLocation(), this->target.getLocation()) <= threshold) {
+            this->setLocation(this->target.getLocation());
             if (!reachedLastFrame) {
                 reachedLastFrame = true;
             }
@@ -50,57 +50,55 @@ namespace seekpoint {
         this->fov.setOrigin(this->location);
     }
 
-    bool Seeker::canSee(const sf::Vector2f& position) {
+    bool Seeker::canSee(const sf::Vector2f& position) const{
         return this->getFieldOfVision().isInFieldOfVision(position);
     }
 
-    seekpoint::FieldOfVision Seeker::getFieldOfVision() {
+    seekpoint::FieldOfVision Seeker::getFieldOfVision() const{
         return this->fov;
     }
 
-    float Seeker::getRotation() {
+    float Seeker::getRotation()  const {
         return this->teachRot;
     }
 
-    float Seeker::getVisionDistance() {
+    float Seeker::getVisionDistance()  const {
         return this->teachVision;
     }
 
-    float Seeker::getFovAngle() {
+    float Seeker::getFovAngle()  const {
         return this->teachFovAngle;
     }
 
-    float Seeker::getRotationSpeed() {
+    float Seeker::getRotationSpeed()  const {
         return this->teachRotationSpeed;
     }
 
-    sf::Color Seeker::getSeekerColor() {
+    sf::Color Seeker::getSeekerColor()  const {
         return this->seekerColor;
     }
 
-    unsigned int Seeker::getSeekerSize() {
+    unsigned int Seeker::getSeekerSize()  const {
         return this->seekerSize;
     }
 
-    unsigned int Seeker::getRenderPoints() {
+    unsigned int Seeker::getRenderPoints()  const {
         return this->teachRenderPoints;
     }
 
-    float Seeker::getSeekerSpeed() {
+    float Seeker::getSeekerSpeed()  const {
         return this->teachMoveSpeed;
     }
 
-    sf::Vector2f Seeker::getLocation() {
+    sf::Vector2f Seeker::getLocation()  const {
         return this->location;
     }
 
-    sf::Vector2f Seeker::getCurrentTarget() {
+    Target& Seeker::getCurrentTarget()  const {
         return this->target;
     }
 
-    void Seeker::updateCurrentTarget(const sf::Vector2f& newTarget) {
-        if (this->target != newTarget) {
-        }
+    void Seeker::updateCurrentTarget(Target& newTarget) {
         this->target = newTarget;
     }
 

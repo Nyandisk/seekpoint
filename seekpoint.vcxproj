@@ -145,12 +145,14 @@
     <ClCompile Include="seeker.cpp" />
     <ClCompile Include="spmath.cpp" />
     <ClCompile Include="seekpoint.cpp" />
+    <ClCompile Include="target.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="definitions.hpp" />
     <ClInclude Include="fieldofvision.h" />
     <ClInclude Include="spmath.h" />
     <ClInclude Include="seeker.h" />
+    <ClInclude Include="target.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
