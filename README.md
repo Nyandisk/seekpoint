@@ -1,4 +1,4 @@
-# seekpoint
+# seekpoint = broken as of now, i forgor
 SFML test
 
 ## Controls:
